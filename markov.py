@@ -58,6 +58,9 @@ class Markov():
             seed: An iterable that supplies the starting sequence. Needs to be
                 at least as long as the order of the chain. Can be a string.
             length: The desired length of the list to generate
+        
+        Returns:
+            list: Genrated sequence of length 'length'.
         """
         order = self.order
         
