@@ -1,4 +1,17 @@
-"""Markov Chain"""
+"""Markov Chain for generating lists of any immutable objects. Typical use case is text,
+but it is not limited to this. The supplied main() example reads a text file containing
+an excerpt from The Canterbury Tales (chaucer.txt) and generates a Markov Chain based on
+it. The Markov Chain is of order 6 and the basic unit is a character. It is possible to
+use the supplied class for creating Markov chains with words as the basic unit as well.
+Any choice of order is supported so feel free to play around.
+
+The order defines how many previous characters should be looked at when deciding which
+one should follow. Higher order gives more coherent text, but make the order too high
+and you will just copy large swaths of the original. You can try with other sources as
+well and see what works well. It is really the quality of the source material that
+defines the quality of the output. Generally, the source should be as large as possible,
+but since my code keeps the generated model in memory it can’t handle too large datasets.
+This could be improved by storing the model in a database."""
 import random
 
 class Markov():
