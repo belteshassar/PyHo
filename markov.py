@@ -64,18 +64,25 @@ class Markov():
             else:
                 self._state_trans_dict[key] = [training_list[i]]
     
-    def generate(self,seed,length=24):
+    def generate(self,seed=None,length=24):
         """Generate a list of length elements based on the markov chain model.
         
         Args:
             seed: An iterable that supplies the starting sequence. Needs to be
-                at least as long as the order of the chain. Can be a string.
+                at least as long as the order of the chain. Can be a string. If
+                seed is None or not supplied than a random key of self._state_trans_dict
+                will be used as seed.
             length: The desired length of the list to generate
         
         Returns:
             list: Genrated sequence of length 'length'.
         """
         order = self.order
+        
+        if seed == None or len(seed) < order:
+            seed = random.choice(list(self._state_trans_dict.keys()))
+        elif not tuple(seed[-order:]) in self._state_trans_dict:
+            seed = random.choice(list(self._state_trans_dict.keys()))
         
         output_list = list(seed)
         for i in range(len(seed),length):
@@ -91,7 +98,7 @@ def main():
     mc = Markov(text,6)
 
     output_text = ''
-    for char in mc.generate('For though',140):
+    for char in mc.generate(length=140):
         output_text = output_text + char
     print(output_text)
     
