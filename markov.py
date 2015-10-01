@@ -10,7 +10,7 @@ one should follow. Higher order gives more coherent text, but make the order too
 and you will just copy large swaths of the original. You can try with other sources as
 well and see what works well. It is really the quality of the source material that
 defines the quality of the output. Generally, the source should be as large as possible,
-but since my code keeps the generated model in memory it can’t handle too large datasets.
+but since my code keeps the generated model in memory it can't handle too large datasets.
 This could be improved by storing the model in a database."""
 import random
 
