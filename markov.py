@@ -29,12 +29,16 @@ class Markov():
             training_list: must be a sequence containing only immutable objects
                 e.g. a list of strings, a list of numbers etc. The objects need to
                 be immutable because they are used as keys in the dict that stores
-                the learned model. Note that a string is a sequence of characters and can be used for
-                this argument.
+                the learned model. Note that a string is a sequence of characters
+                and can be used for this argument. A list may also be given. If a
+                string is given, the resulting Markov Chain will use characters as
+                the basic unit. If a list is given, the elements of the list (e.g. words)'
+                will be the basic unit.
             order (int): Defines the order of the markov chain. Defaults to 1.
         """
         
         self.order = order
+        self._state_trans_dict = {}
         
         if training_list != None:
             self._train(training_list)
@@ -43,7 +47,9 @@ class Markov():
             self.trained = False
             
     def train(self,training_list=None):
-        """Train the markov chain using a sequence.
+        """Train the markov chain using a sequence. The train function can be called
+        multiple times if necessary. The learned data will be retained. This way multiple
+        samples can be used.
     
         Args:
             training_list: See __init__. If training_is not supplied or None
@@ -55,7 +61,7 @@ class Markov():
     
     def _train(self,training_list):
         """Non-public helper function for training."""
-        self._state_trans_dict = {}
+        
         order = self.order
         for i in range(order,len(training_list)):
             key = tuple(training_list[i-order:i])
