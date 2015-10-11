@@ -118,6 +118,21 @@ def main():
     for char in mc.generate(length=140):
         output_text = output_text + char
     print(output_text)
+
+def test_generate_one():
+    file = open('chaucer.txt', 'r')
+    text = file.read()
+    file.close()
     
+    mc = Markov(text,6)
+    
+    output_text = ''
+    
+    for i in range(140):
+        output_text = output_text + mc.generate_one()
+    print(output_text)
+   
 if __name__ == '__main__': #This snippet lets you import without executing
-    main()
+    # main()
+    test_generate_one()
+    
