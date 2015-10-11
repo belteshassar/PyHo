@@ -88,9 +88,9 @@ class Markov():
         order = self.order
         
         if seed == None or len(seed) < order:
-            seed = random.choice(list(self._state_trans_dict.keys()))
+            seed = self._current_state
         elif not tuple(seed[-order:]) in self._state_trans_dict:
-            seed = random.choice(list(self._state_trans_dict.keys()))
+            seed = self._current_state
         
         output_list = list(seed)
         for i in range(len(seed),length):
