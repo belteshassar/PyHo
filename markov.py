@@ -70,7 +70,7 @@ class Markov():
                 self._state_trans_dict[key] = [training_list[i]]
         
         if not self.trained:
-            self._current_state = random.choice(list(self._state_trans_dict.keys()))
+            self.seed()
         
     def generate(self,seed=None,length=24):
         """Generate a list of length elements based on the markov chain model.
@@ -113,6 +113,9 @@ class Markov():
         self._current_state = new_state
         
         return output
+        
+    def seed(self):
+        self._current_state = random.choice(list(self._state_trans_dict.keys()))
             
 def main():
     file = open('chaucer.txt', 'r')
