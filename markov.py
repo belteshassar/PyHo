@@ -39,13 +39,12 @@ class Markov():
         
         self.order = order
         self._state_trans_dict = {}
+        self.trained = False
         
         if training_list != None:
             self._train(training_list)
             self.trained = True
-        else:
-            self.trained = False
-            
+        
     def train(self,training_list=None):
         """Train the markov chain using a sequence. The train function can be called
         multiple times if necessary. The learned data will be retained. This way multiple
@@ -69,7 +68,10 @@ class Markov():
                 self._state_trans_dict[key].append(training_list[i])
             else:
                 self._state_trans_dict[key] = [training_list[i]]
-    
+        
+        if not self.trained:
+            self._current_state = random.choice(list(self._state_trans_dict.keys()))
+        
     def generate(self,seed=None,length=24):
         """Generate a list of length elements based on the markov chain model.
         
