@@ -107,7 +107,10 @@ class Markov():
         
         output = random.choice(candidates)
         
-        self._current_state = self._current_state[(-order+1):] + (output,)
+        new_state = self._current_state + (output,)
+        new_state = new_state[-order:]
+        
+        self._current_state = new_state
         
         return output
             
