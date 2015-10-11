@@ -98,10 +98,14 @@ class Markov():
             output_list.append(random.choice(self._state_trans_dict[key]))
         return output_list
         
-    def generate_one(self):
+    def generate_one(self,custom_filter=None):
         order = self.order
-    
-        output = random.choice(self._state_trans_dict[self._current_state])
+        
+        candidates = self._state_trans_dict[self._current_state]
+        if custom_filter != None:
+            candidates = filter(custom_filter,candidates)
+        
+        output = random.choice(candidates)
         
         self._current_state = self._current_state[(-order+1):] + (output,)
         
