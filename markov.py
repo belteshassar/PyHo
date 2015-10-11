@@ -39,13 +39,12 @@ class Markov():
         
         self.order = order
         self._state_trans_dict = {}
+        self.trained = False
         
         if training_list != None:
             self._train(training_list)
             self.trained = True
-        else:
-            self.trained = False
-            
+        
     def train(self,training_list=None):
         """Train the markov chain using a sequence. The train function can be called
         multiple times if necessary. The learned data will be retained. This way multiple
@@ -69,7 +68,10 @@ class Markov():
                 self._state_trans_dict[key].append(training_list[i])
             else:
                 self._state_trans_dict[key] = [training_list[i]]
-    
+        
+        if not self.trained:
+            self._current_state = random.choice(list(self._state_trans_dict.keys()))
+        
     def generate(self,seed=None,length=24):
         """Generate a list of length elements based on the markov chain model.
         
@@ -86,15 +88,28 @@ class Markov():
         order = self.order
         
         if seed == None or len(seed) < order:
-            seed = random.choice(list(self._state_trans_dict.keys()))
+            seed = self._current_state
         elif not tuple(seed[-order:]) in self._state_trans_dict:
-            seed = random.choice(list(self._state_trans_dict.keys()))
+            seed = self._current_state
         
         output_list = list(seed)
         for i in range(len(seed),length):
             key = tuple(output_list[i-order:i])
             output_list.append(random.choice(self._state_trans_dict[key]))
         return output_list
+        
+    def generate_one(self,custom_filter=None):
+        order = self.order
+        
+        candidates = self._state_trans_dict[self._current_state]
+        if custom_filter != None:
+            candidates = filter(custom_filter,candidates)
+        
+        output = random.choice(candidates)
+        
+        self._current_state = self._current_state[(-order+1):] + (output,)
+        
+        return output
             
 def main():
     file = open('chaucer.txt', 'r')
@@ -107,6 +122,21 @@ def main():
     for char in mc.generate(length=140):
         output_text = output_text + char
     print(output_text)
+
+def test_generate_one():
+    file = open('chaucer.txt', 'r')
+    text = file.read()
+    file.close()
     
+    mc = Markov(text,6)
+    
+    output_text = ''
+    
+    for i in range(140):
+        output_text = output_text + mc.generate_one()
+    print(output_text)
+   
 if __name__ == '__main__': #This snippet lets you import without executing
-    main()
+    # main()
+    test_generate_one()
+    
